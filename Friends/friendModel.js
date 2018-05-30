@@ -12,7 +12,7 @@ const friendDefinition = {
         required: true,
     },
     age: {
-        type: String,
+        type: Number,
         required: true,
     },
     createdOn: {
