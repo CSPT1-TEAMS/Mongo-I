@@ -8,7 +8,8 @@ const definition = {
 }
 
 const options = {
-  timestamps: true
+  timestamps: true,
+  strict: false
 } 
 
 const friendSchema = mongoose.Schema(definition, options);

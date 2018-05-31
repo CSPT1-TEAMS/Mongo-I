@@ -31,7 +31,14 @@ router
     res.status(200).json({ route: '/api/friends/' + req.params.id });
   })
   .delete((req, res) => {
-    res.status(200).json({ status: 'please implement DELETE functionality' });
+    const { id } = req.params;
+    Friend.findByIdAndRemove(id)
+      .then( friend => {
+        res.status(200).json(friend);
+      })
+      .catch( err => {
+        res.status(500).json({error: 'Error deleting from database', err});
+      })
   })
   .put((req, res) => {
     res.status(200).json({ status: 'please implement PUT functionality' });
