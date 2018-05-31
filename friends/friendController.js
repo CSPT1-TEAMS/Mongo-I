@@ -20,17 +20,22 @@ router.route('/')
         friend
             .save()
             .then(friend => {
-                res.status(201).json(friend)
+                console.log(friend.firstName)
+                if (friend.firstName === "" || friend.lastName === "" || friend.age === "") {
+                    res.status(400).json({ errorMessage: "Please provide firstName, lastName and age for the friend." })
+                } else {
+                    res.status(201).json(friend)
+                }
             })
             .catch(err => {
-                res.status(500).json(err);
+                res.status(500).json({ errorMessage: "There was an error while saving the friend to the database." });
             });
     });
 
 router.route('/:id')
     .get((req, res) => {
         const friendId = req.params.id;
-        
+
         Friend.findById(friendId)
             .then(friend => {
                 if (friend !== null) {
@@ -42,7 +47,7 @@ router.route('/:id')
             .catch(err => {
                 res.status(500).json({ errorMessage: "The friend information could not be retrieved." })
             })
-    }) 
+    })
     .delete((req, res) => {
         const friendId = req.params.id;
 
@@ -57,7 +62,7 @@ router.route('/:id')
             .catch(err => {
                 res.status(500).json({ error: "The friend could not be removed" })
             })
-    })  
+    })
     .put((req, res) => {
         const friendId = req.params.id;
         const friendData = req.body;
@@ -67,7 +72,9 @@ router.route('/:id')
 
         Friend.findByIdAndUpdate(friendId, friendData, options)
             .then(friend => {
-                if (friend !== null) {
+                if (friend.firstName === "" || friend.lastName === "" || friend.age === "") {
+                    res.status(400).json({ errorMessage: "Please provide firstName, lastName and age for the friend." })
+                } else if (friend !== null) {
                     res.status(200).json(friend);
                 } else {
                     res.sendStatus(404).json({ message: "The friend with the specified ID does not exist." });
@@ -76,6 +83,6 @@ router.route('/:id')
             .catch(err => {
                 res.status(500).json(err);
             })
-    }) ;
+    });
 
-    module.exports = router;
+module.exports = router;
