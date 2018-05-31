@@ -14,8 +14,8 @@ router
     })
 
   .post((req, res) => {
-    const { body } = res;
-    const friend = new Friend(body);
+    const friendData = req.body;
+    const friend = new Friend(friendData);
     friend.save()
       .then( friend => {
         res.status(201).json(friend);
@@ -34,14 +34,32 @@ router
     const { id } = req.params;
     Friend.findByIdAndRemove(id)
       .then( friend => {
-        res.status(200).json(friend);
+        if (friend !== null) {
+          res.status(200).json(friend);
+        } else {
+          res.status(404).json({error: 'Friend not found' })
+        }
       })
       .catch( err => {
         res.status(500).json({error: 'Error deleting from database', err});
       })
   })
+
   .put((req, res) => {
-    res.status(200).json({ status: 'please implement PUT functionality' });
+    const { id } = req.params;
+    const friendData = req.body;
+    const options = {
+      new: true
+    }
+    Friend.findByIdAndUpdate(id, friendData, options)
+      .then( friend => {
+        if (friend !== null) {
+          res.status(200).json(friend);
+        } else {
+          res.sendStatus(404);
+        }
+      })
+    .catch(err => res.status(500).json(err))
   });
 
 module.exports = router;
