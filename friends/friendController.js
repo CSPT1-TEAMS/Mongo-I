@@ -20,9 +20,10 @@ router.route('/')
         friend
             .save()
             .then(friend => {
-                console.log(friend.firstName)
                 if (friend.firstName === "" || friend.lastName === "" || friend.age === "") {
                     res.status(400).json({ errorMessage: "Please provide firstName, lastName and age for the friend." })
+                } else if (friend.age < 1 || friend.age > 250) {
+                    res.status(400).json({ errorMessage: "Age must be a number between 1 and 120" })
                 } else {
                     res.status(201).json(friend)
                 }

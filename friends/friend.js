@@ -3,17 +3,17 @@ const mongoose = require('mongoose');
 const definition = {
     firstName: {
         type: String,
-        // required: [true, "First name is required"]
+        required: [true, "First name is required"]
     },
     lastName: {
         type: String,
-        // required: [true, "Last name is required"]
+        required: [true, "Last name is required"]
     },
     age: {
         type: Number,
-        // required: true,
-        min: [1, "Age must be greater than 1"],
-        max: [120, "Age must be less than 1"]
+        required: true,
+        // min: [1, "Age must be greater than 1"],
+        // max: [120, "Age must be less than 1"]
     },
     createdOn: {
         type: Date,
