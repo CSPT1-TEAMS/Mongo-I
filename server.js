@@ -66,5 +66,56 @@ server.get('api/friends', (req, res) => {
   }
 });
 
+server.delete('api/friends', (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    res.status(400).json({ errorMessage: 'Please provide a valid ID' });
+  } else {
+    Friend.findByIdAndRemove(id)
+      .then((friend) => {
+        if (!friend) {
+          res.status(404).json({ errorMessage: 'The friend with the specified ID does not exist' });
+        } else {
+          res.status(200).json(friend);
+        }
+      })
+      .catch((error) => {
+        res.status(500).json({ errorMessage: 'The friend could not be removed' });
+      });
+  }
+});
+
+server.put('api/friends', (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    res.status(400).json({ errorMessage: 'Please provide a valid ID' });
+  } else {
+    Friend.findById(id)
+      .then((friend) => {
+        if (!friend) {
+          res.status(404).json({ errorMessage: 'The friend with the specified ID does not exist.' });
+        } else {
+          const { firstName, lastName, age, createdOn } = req.body;
+          createdOn = !createdOn ? new Date() : createdOn; /* initialize createdOn to current date/time if it is 
+                                                            * undefined */
+          if (!firstName || !lastName || !age) {
+            res.status(400).json({ errorMessage: 'Please provide firstName, lastName, and age for the friend.' });
+          }
+          if (typeof age !== Number || age < 1 || age > 120) {
+            res.status(400).json({ errorMessage: 'Age must be a number between 1 and 120.' });
+          }
+          const friend = new Friend({ firstName, lastName, age, createdOn });
+          friend.save()
+            .then((newFriend) => {
+              res.status(200).json(newFriend);
+            }); // no need for catch here because we have outer catch    
+        }
+      })
+      .catch((error) => {
+        res.status(500).json({ errorMessage: 'The friend information could not be modified'})
+      });
+  }
+});
+
 const port = process.env.PORT || 5000;
 server.listen(port, () => console.log(`\n=== API up on port: ${port} ===\n`));
