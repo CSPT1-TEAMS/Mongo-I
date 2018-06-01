@@ -45,5 +45,28 @@ server.route('/api/friends').post((req, res) => {
       res.status(500).json(error)
     })
 })
+
+server.route('/api/friends/:id').delete((req, res) => {
+  const { id } = req.params
+    Friend.findByIdAndRemove(id)
+      .then((response) => {
+        res.status(200).json(response)
+      })
+      .catch((error) => {
+        res.status(500).json(error)
+      })
+})
+
+server.route('/api/friends/:id').put((req, res) => {
+  const { id } = req.params
+  const updateFriend = req.body
+    Friend.findByIdAndUpdate(id, updateFriend, {new: true})
+      .then((response) => {
+        res.status(200).json(response)
+      })
+      .catch((error) => {
+        res.status(500).json(error)
+      })
+})
 const port = process.env.PORT || 5000;
 server.listen(port, () => console.log(`\n=== API up on port: ${port} ===\n`));
