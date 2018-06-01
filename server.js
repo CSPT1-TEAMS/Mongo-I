@@ -29,21 +29,39 @@ server.route('/api/friends').get((req, res) => {
     .then((response) => {
       res.status(200).json(response)
     })
-    .catch((error) => {
-      res.status(500).json(error)
+    .catch(() => {
+      res.status(500).json(`{ errorMessage: "The friends information could not be retrieved." }`)
     })
 })
 
+server.get('/api/friends/:id', (req, res) => {
+  const { id } = req.params
+    Friend.findById(id)
+      .then((response) => {
+        if(!response)
+           res.status(404).json(`{ message: "The friend with the specified ID does not exist." }`)
+        res.status(200).json(response)
+      })
+      .catch((error) => {
+        res.status(500).json(`{ errorMessage: "The friend information could not be retrieved." }`)
+      }) 
+})
+
 server.route('/api/friends').post((req, res) => {
-  const newFriend = req.body;
-  const friend = new Friend(newFriend)
-    .save()
-    .then((response) => {
-      res.status(200).json(response)
-    })
-    .catch((error) => {
-      res.status(500).json(error)
-    })
+  const {firstName, lastName, age} = req.body;
+  if(!firstName || !lastName || !age)
+    res.status(400).json(`{ errorMessage: "Please provide firstName, lastName and age for the friend." }`)
+  if ( age < 1 || age > 120 )
+    res.status(400).json(`{ errorMessage: "Age must be a number between 1 and 120" }`)
+      const newFriend = {firstName, lastName, age}
+      const friend = new Friend(newFriend)
+        .save()
+        .then((response) => {
+          res.status(201).json(response)
+        })
+        .catch(() => {
+          res.status(500).json( `{ errorMessage: "There was an error while saving the friend to the database." }`) 
+        })
 })
 
 server.route('/api/friends/:id').delete((req, res) => {
@@ -52,8 +70,8 @@ server.route('/api/friends/:id').delete((req, res) => {
       .then((response) => {
         res.status(200).json(response)
       })
-      .catch((error) => {
-        res.status(500).json(error)
+      .catch(() => {
+        res.status(500).json( `{ errorMessage: "The friend could not be removed" }`)
       })
 })
 
@@ -64,8 +82,8 @@ server.route('/api/friends/:id').put((req, res) => {
       .then((response) => {
         res.status(200).json(response)
       })
-      .catch((error) => {
-        res.status(500).json(error)
+      .catch(() => {
+        res.status(500).json(`{ errorMessage: "The friend information could not be modified." }`)
       })
 })
 const port = process.env.PORT || 5000;
