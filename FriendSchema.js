@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost/friends")
+mongoose.connect("mongodb://localhost/friendsdb")
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -10,17 +10,17 @@ db.once('open', function() {
 const definition = {
     firstName: {
         type: String,
-        required: true
+        required: [true, "Please provide firstName, lastName and age for the friend."]
     },
     lastName: {
         type: String,
-        required: true
+        required: [true, "Please provide firstName, lastName and age for the friend."]
     },
     age: {
         type: Number,
-        required: true,
-        min: 1,
-        max: 120
+        required: [true, "Please provide firstName, lastName and age for the friend."],
+        min: [1, "Age must be a number between 1 and 120"],
+        max: [120, "Age must be a number between 1 and 120"]
     },
     createdOn: {
         type: Date,
