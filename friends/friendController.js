@@ -20,7 +20,7 @@ router
     if (!firstName || !lastName || !age) {
       return res.status(400).json({error: 'Please provide first and last name and age'})
     }
-    if (age < 1 || age > 120) { // need to check age type === number, errors out
+    if (age < 1 || age > 120 || typeof age !== 'number') { 
       return res.status(400).json({error: 'Invalid age!'})
     }
     const friend = new Friend(friendData);
@@ -75,7 +75,7 @@ router
     if (!firstName || !lastName || !age) {
       return res.status(400).json({error: 'Please provide first and last name and age'})
     }
-    if (age < 1 || age > 120) { 
+    if (age < 1 || age > 120 || typeof age !== 'number') { 
       return res.status(400).json({error: 'Invalid age!'})
     }
     Friend.findByIdAndUpdate(id, friendData, options)
