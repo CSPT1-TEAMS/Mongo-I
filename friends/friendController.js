@@ -15,6 +15,15 @@ router
 
   .post((req, res) => {
     const friendData = req.body;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const age = req.body.age;
+    if (!firstName || !lastName || !age) {
+      return res.status(400).json({error: 'Please provide first and last name and age'})
+    }
+    if (age < 1 || age > 120) { // need to check age type === number, errors out
+      return res.status(400).json({error: 'Invalid age!'})
+    }
     const friend = new Friend(friendData);
     friend.save()
       .then( friend => {
@@ -28,7 +37,18 @@ router
 router
   .route('/:id')
   .get((req, res) => {
-    res.status(200).json({ route: '/api/friends/' + req.params.id });
+    const { id } = req.params;
+    Friend.findById(id)
+      .then( friend => {
+        if (friend !== null) {
+          res.status(200).json(friend);
+        } else {
+          res.status(404).json({error: 'Friend not found' })
+        }
+      })
+      .catch( err => {
+        res.status(500).json({error: 'Error retrieving friend from database', err});
+      })
   })
   .delete((req, res) => {
     const { id } = req.params;
@@ -41,7 +61,7 @@ router
         }
       })
       .catch( err => {
-        res.status(500).json({error: 'Error deleting from database', err});
+        res.status(500).json({error: 'Error deleting friend from database', err});
       })
   })
 
@@ -50,6 +70,15 @@ router
     const friendData = req.body;
     const options = {
       new: true
+    }
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const age = req.body.age;
+    if (!firstName || !lastName || !age) {
+      return res.status(400).json({error: 'Please provide first and last name and age'})
+    }
+    if (age < 1 || age > 120) { 
+      return res.status(400).json({error: 'Invalid age!'})
     }
     Friend.findByIdAndUpdate(id, friendData, options)
       .then( friend => {
