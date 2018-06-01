@@ -3,7 +3,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/frienddb')
+mongoose.connect('mongodb://localhost:27017/frienddb')
   .then(mongo => {
     console.log('connected');
   })
