@@ -18,6 +18,9 @@ const definition = {
     createdOn: {
         type: Date,
         default: Date.now,
+    },
+    contactInfo: {
+        type: Array
     }
 }
 
