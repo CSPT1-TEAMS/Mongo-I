@@ -15,9 +15,8 @@ router
 
   .post((req, res) => {
     const friendData = req.body;
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const age = req.body.age;
+    const { firstName, lastName, age } = req.body;
+
     if (!firstName || !lastName || !age) {
       return res.status(400).json({error: 'Please provide first and last name and age'})
     }
@@ -71,9 +70,8 @@ router
     const options = {
       new: true
     }
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const age = req.body.age;
+    const { firstName, lastName, age } = req.body;
+
     if (!firstName || !lastName || !age) {
       return res.status(400).json({error: 'Please provide first and last name and age'})
     }
