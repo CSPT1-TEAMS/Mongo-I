@@ -3,29 +3,49 @@ const helmet = require('helmet');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-const friendController = require('./friends/friendController');
+// const friendController = require('./friends/friendController');
 
-const server = express();
+const server = express()
 
 // connect to database (mongoDB)
-mongoose.connect('mongodb://localhost/frienddb'); // db is created upon connection
-let db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Database connection failed:'));
+mongoose.connect('mongodb://localhost/frienddb') // db is created upon connection
+let db = mongoose.connection
+db.on('error', console.error.bind(console, 'Database connection failed:'))
 db.once('open', function () {
   console.log('Successfully Connected to MongoDB') // we're connected!
-});
+})
 
 // apply middleware
-server.use(helmet());
-server.use(cors());
-server.use(express.json());
+server.use(helmet())
+server.use(cors())
+server.use(express.json())
 
-server.use('/api/friends', friendController);
+// server.use('/api/friends', friendController);
 
+// ☞ 6894d39a-f208-402e-a4e7-f67d7f3e0a87
+server.post('/:id', (req, res) => {
+
+})
+
+// ☞ 0ed28b87-048f-4a02-a16b-1adaf5ac3291
 server.get('/', (req, res) => {
   res.status(200).json({ api: 'running' });
 });
 
+// ☞ f0f27993-3dea-443d-a7f6-19a34863fac2
+server.get('/:id', (req, res) => {
+
+})
+
+// ☞ ac28ef11-6fa4-47ff-b5be-f8e40f44a9dd
+server.delete('/:id', (req, res) => {
+
+})
+
+// ☞ 2ab0a8ac-e7ed-4ef5-b975-faa2bb32c48c
+server.put('/:id', (req, res) => {
+
+})
 
 const port = process.env.PORT || 5000;
 server.listen(port, () => console.log(`\n=== API up on port: ${port} ===\n`));
