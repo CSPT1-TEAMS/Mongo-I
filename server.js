@@ -19,6 +19,10 @@ server.use(helmet());
 server.use(cors());
 server.use(express.json());
 
+let friends = [
+  {firstName: "Laurel", lastName: "Lance", age: 32}
+];
+
 server.get('/', (req, res) => {
   res.status(200).json({ api: 'running' });
 });

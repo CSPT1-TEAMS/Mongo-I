@@ -12,8 +12,8 @@ const definition = {
     age: {
         type: Number,
         required: true,
-        // min: [1, "Age must be greater than 1"],
-        // max: [120, "Age must be less than 1"]
+        min: [1, "Age must be greater than 1"],
+        max: [120, "Age must be less than 1"]
     },
     createdOn: {
         type: Date,

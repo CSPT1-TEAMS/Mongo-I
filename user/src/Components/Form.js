@@ -3,7 +3,7 @@ import { Button, Form, FormGroup, Input, Container } from 'reactstrap';
 import axios from 'axios';
 import './Form.css';
 
-class friendForm extends Component {
+class FriendForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -15,8 +15,9 @@ class friendForm extends Component {
 
     addFriend = () => {
         const { firstName, lastName, age } = this.state;
+        console.log(this.state);
         axios
-            .post('http://localhost:27017/api/friends', { firstName, lastName, age })
+            .post('http://localhost:5000/api/friends', { firstName, lastName, age })
             .then((response) => {
                 this.setState({
                     firstName: '',
@@ -69,4 +70,4 @@ class friendForm extends Component {
     }
 }
 
-export default friendForm;
+export default FriendForm;

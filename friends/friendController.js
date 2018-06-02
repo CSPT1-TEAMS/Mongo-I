@@ -22,14 +22,16 @@ router.route('/')
             .then(friend => {
                 if (friend.firstName === "" || friend.lastName === "" || friend.age === "") {
                     res.status(400).json({ errorMessage: "Please provide firstName, lastName and age for the friend." })
-                } else if (friend.age < 1 || friend.age > 250) {
-                    res.status(400).json({ errorMessage: "Age must be a number between 1 and 120" })
                 } else {
                     res.status(201).json(friend)
                 }
             })
             .catch(err => {
-                res.status(500).json({ errorMessage: "There was an error while saving the friend to the database." });
+                if(err.errors.age) {
+                    res.status(400).json({ errorMessage: "Age must be a number between 1 and 120" }) 
+                } else {
+                    res.status(500).json({ errorMessage: "There was an error while saving the friend to the database." });
+                }
             });
     });
 
