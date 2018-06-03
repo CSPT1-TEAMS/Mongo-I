@@ -6,16 +6,17 @@ class Friends extends Component {
     render() {
         return (
             <div className="Friends">
-            <h1>Friend List</h1>
+                <h1>Friend List</h1>
                 <ul>
                     { this.props.friends.map(friend => {
                         return (
                             <Friend
                                 firstName={ friend.firstName }
-                                lastName={friend.lastName}
-                                age={friend.age}
+                                lastName={ friend.lastName }
+                                age={ friend.age }
                                 key={ friend._id }
-                               
+                                id={ friend._id }
+                                deleteFriendFromServer={ this.props.deleteFriendFromServer }
                             />
                         );
                     }) }

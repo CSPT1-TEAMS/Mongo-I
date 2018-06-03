@@ -16,7 +16,6 @@ class App extends Component {
     axios
       .get('http://localhost:5000/api/friends')
       .then((response) => {
-        console.log('RESPONSE', response)
         this.setState({ friends: response.data })
       })
       .catch((err) => {
@@ -35,13 +34,32 @@ class App extends Component {
       })
   }
 
+  deleteFriendFromServer = (id) => {
+    axios
+      .delete(`http://localhost:5000/api/friends/${id}`)
+      .then((response) => {
+        // console.log('RESPONSE', response)
+        const removedFriend = response.data._id;
+        const friendArray = this.state.friends.filter((item) => {
+          return item._id !== removedFriend;
+        })
+        this.setState({ friends: friendArray })
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
   render() {
     return (
       <div className="App">
         <h1>Friend Database</h1>
         <h3>Add Your Info</h3>
-        <FriendForm addFriendToServer={ this.addFriendToServer } />
-        <Friends friends={this.state.friends} />
+        <FriendForm
+          addFriendToServer={ this.addFriendToServer } />
+        <Friends
+          friends={ this.state.friends }
+          deleteFriendFromServer={ this.deleteFriendFromServer } />
       </div>
     );
   }
