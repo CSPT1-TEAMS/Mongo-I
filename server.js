@@ -6,7 +6,8 @@ const mongoose = require('mongoose')
 const FriendModel = require('./friends/models/friendModels')
 
 // connect to database (mongoDB)
-mongoose.connect('mongodb://localhost/friends')
+// ☞ 54bb5a45-6fe1-498e-af0b-75b2024b32b1
+mongoose.connect('mongodb://localhost/friends').then()
 
 const friendController = require('./friends/friendController')
 
