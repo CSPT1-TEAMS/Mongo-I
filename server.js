@@ -1,16 +1,31 @@
-const express = require('express');
-const helmet = require('helmet');
-const cors = require('cors');
+const express = require('express')
+const helmet = require('helmet')
+const cors = require('cors')
+const mongoose = require('mongoose')
 
-const server = express();
+const FriendModel = require('./friends/models/friendModels')
 
-server.use(helmet());
-server.use(cors());
-server.use(express.json());
+// connect to database (mongoDB)
+// ☞ 54bb5a45-6fe1-498e-af0b-75b2024b32b1
+mongoose.connect('mongodb://localhost/friends').then()
 
+const friendController = require('./friends/friendController')
+
+const server = express()
+
+// apply middleware
+server.use(helmet())
+server.use(cors())
+server.use(express.json())
+
+// ☞ 0ed28b87-048f-4a02-a16b-1adaf5ac3291
 server.get('/', (req, res) => {
-  res.status(200).json({ api: 'running' });
-});
+  res.status(200).json({ api: 'running from server.js' })
+})
 
-const port = process.env.PORT || 5000;
-server.listen(port, () => console.log(`\n=== API up on port: ${port} ===\n`));
+server.use('/friends', friendController)
+
+const port = process.env.PORT || 5000
+server.listen(port, () => {
+  console.log(`\n=== API up on port: ${port} ===\n`)
+})
